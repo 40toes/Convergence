@@ -4,7 +4,9 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import pylab
-import scipy
+from scipy import io
+from scipy.io import wavfile
+from scipy import signal
 from scipy.fftpack import fft
 
 im = cv2.imread('cabrillo.jpg')
@@ -38,14 +40,20 @@ for i in range(406,len(cnt)):
     y[ii] = cnt[i]
     ii=ii+1
 else:
+ ##Convolve audio with cabrillo (maybe use wave.py)
+    sr, samples = io.wavfile.read("surfinusa.wav")
+    print sr
+    print samples
+
     yf = fft(y)
-    plt.subplot(121)
+    plt.subplot(131)
     plt.plot(x, y)
-    plt.subplot(122)
+    plt.subplot(132)
+    plt.plot(x,yf)
+    plt.subplot(133)
+    # plt.plot(x,signal.convolve(y, samples.flatten(), mode='same'))
     plt.plot(x,yf)
     cv2.imshow('cabrillo.jpg',im)
     plt.show()
 
 
-
- ##Turn contour into freq response with freqz
