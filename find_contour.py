@@ -4,6 +4,8 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import pylab
+import scipy
+from scipy.fftpack import fft
 
 im = cv2.imread('cabrillo.jpg')
 edges = cv2.Canny(im,250,100)
@@ -36,7 +38,14 @@ for i in range(406,len(cnt)):
     y[ii] = cnt[i]
     ii=ii+1
 else:
-    plt.figure(0)
+    yf = fft(y)
+    plt.subplot(121)
     plt.plot(x, y)
+    plt.subplot(122)
+    plt.plot(x,yf)
     cv2.imshow('cabrillo.jpg',im)
     plt.show()
+
+
+
+ ##Turn contour into freq response with freqz
