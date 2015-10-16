@@ -1,41 +1,59 @@
-#include "opencv2/core/core.hpp"
-#include "opencv2/highgui/highgui.hpp""
-#include "opencv2/imgproc/imgproc.hpp"
-#include "iostream"
-using namespace cv;
-using namespace std;
-int main( )
-{
-    Mat src;
-    src = imread("shape.jpg", CV_LOAD_IMAGE_COLOR);
-    Mat gray;
-    cvtColor(src, gray, CV_BGR2GRAY);
-    threshold(gray, gray,200, 255,THRESH_BINARY_INV); //Threshold the gray
-    imshow("gray",gray);int largest_area=0;
-    int largest_contour_index=0;
-    Rect bounding_rect;
-    vector<vector<Point>> contours; // Vector for storing contour
-    vector<Vec4i> hierarchy;
-    findContours( gray, contours, hierarchy,CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE );
-    // iterate through each contour.
-    for( int i = 0; i< contours.size(); i++ )
-    {
-        //  Find the area of contour
-        double a=contourArea( contours[i],false);
-        if(a>largest_area){
-            largest_area=a;cout<<i<<" area  "<<a<<endl;
-            // Store the index of largest contour
-            largest_contour_index=i;
-            // Find the bounding rectangle for biggest contour
-            bounding_rect=boundingRect(contours[i]);
-        }
-    }
-    Scalar color( 255,255,255);  // color of the contour in the
-    //Draw the contour and rectangle
-    drawContours( src, contours,largest_contour_index, color, CV_FILLED,8,hierarchy);
-    rectangle(src, bounding_rect,  Scalar(0,255,0),2, 8,0);
-    namedWindow( "Display window", CV_WINDOW_AUTOSIZE );
-    imshow( "Display window", src );
-    waitKey(0);
-    return 0;
-}
+import sys
+sys.path.append('/usr/local/lib/python2.7/site-packages')
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+import pylab
+from scipy import io
+from scipy.io import wavfile
+from scipy import signal
+from scipy.fftpack import fft
+
+im = cv2.imread('cabrillo.jpg')
+edges = cv2.Canny(im,250,100)
+# imgray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
+ret,thresh = cv2.threshold(edges,127,255,0)
+contours, hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+
+
+max = 0
+max_ind = 0
+
+for i in range(0, len(contours)):
+    if len(contours[i]) > max:
+        max = len(contours[i])
+        max_ind = i
+else:
+    print max
+
+
+cnt = contours[max_ind]
+M = cv2.moments(cnt)
+cv2.drawContours(im,cnt,-1,(0,255,0),3)
+
+cnt = cnt.flatten(2)
+
+x = np.linspace(0,1,len(cnt)-1)
+y = np.linspace(0,1,len(cnt)-1)
+ii=0
+for i in range(406,len(cnt)):
+    y[ii] = cnt[i]
+    ii=ii+1
+else:
+ ##Convolve audio with cabrillo (maybe use wave.py)
+    sr, samples = io.wavfile.read("surfinusa.wav")
+    print sr
+    print samples
+
+    yf = fft(y)
+    plt.subplot(131)
+    plt.plot(x, y)
+    plt.subplot(132)
+    plt.plot(x,yf)
+    plt.subplot(133)
+    # plt.plot(x,signal.convolve(y, samples.flatten(), mode='same'))
+    plt.plot(x,yf)
+    cv2.imshow('cabrillo.jpg',im)
+    plt.show()
+
+
