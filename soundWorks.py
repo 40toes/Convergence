@@ -6,6 +6,7 @@ from struct import *
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy import signal
+import audioop
 
 ##Canny edge detect
 img = cv2.imread('cabrillo.jpg',0)
@@ -38,7 +39,8 @@ hor = []
 for x in contours:
 	hor.append(x[0][0][0])
 
-# print hor
+print len(hor)
+print len(contours)
 
 b = signal.firwin(80, 0.5, window=('kaiser', 8))
 # print b
@@ -62,43 +64,62 @@ w, h = signal.freqz(hor)
 # plt.show()
 
 ##Port in audio file
-auInput = wave.open('./raw-music/Sparks.wav', mode='rb')
-auOutput = wave.open('./raw-music/output.wav', mode='wb')
+auInput = wave.open('./raw-music/Sparks.wav', mode='r')
+auOutput = wave.open('./raw-music/output.wav', mode='w')
 
-t0, t1 = 10, 30 # cut audio between t0 t1 seconds
-s0, s1 = int(t0*auInput.getframerate()), int(t1*auInput.getframerate())
+t0, t1 = 10, 11 # cut audio between t0 t1 seconds
+# s0, s1 = int(t0*auInput.getframerate()), int(t1*auInput.getframerate())
+s0, s1 = int(t0*auInput.getframerate()), int(t0*auInput.getframerate()+10)
 auInput.readframes(s0) #discard
 frames = auInput.readframes(s1 - s0)
 
-auOutput.setparams(auInput.getparams())
-auOutput.writeframes(frames)
+# testFrame = auInput.readframes(1)
 
+# frames = audioop.mul(frames, 2, 0.5)
+
+auOutput.setparams(auInput.getparams())
+# auOutput.writeframes(frames)
+
+# auInput.close()
+# auOutput.close()
+
+
+# sig = np.repeat([0., 1., 0.], 100)
+# sig = frames
+win = signal.hann(50)
+prewin = signal.hann(4)
+print prewin
+# win = []
+import itertools
+sig = []
+for i in range(len(frames)/2):
+  sig.append(audioop.getsample(frames, 2, i))
+  test = i%4
+  # if test == 0:
+    # win = np.concatenate([win, prewin])
+
+print len(sig)
+print len(win)
+BinStr = ""
+for i in range(len(hor)):
+  BinStr = BinStr + pack('h', round(hor[i]*20000))
+
+# out = audioop.add(frames, BinStr, 2)
+# auOutput.writeframesraw(out)
+auOutput.writeframesraw(BinStr)
 auInput.close()
 auOutput.close()
 
-##Convolve audio with filter coefficients
 
-def get_class_from_frame(fr):
-  import inspect
-  args, _, _, value_dict = inspect.getargvalues(fr)
-  # we check the first parameter for the frame function is
-  # named 'self'
-  if len(args) and args[0] == 'self':
-    # in that case, 'self' will be referenced in value_dict
-    instance = value_dict.get('self', None)
-    if instance:
-      # return its class
-      return getattr(instance, '__class__', None)
-  # return None otherwise
-  return None
+# import binascii
 
-for f in frames:
-	print get_class_from_frame(f)
+# d = unpack('h', testFrame)
+# print d[0]
 
-# sig = np.repeat([0., 1., 0.], 100)
-sig = frames
-win = signal.hann(50)
+# print sig
+# print win
 # filtered = signal.convolve(sig, win, mode='same') / sum(win)
+# filtered = signal.correlate(sig, win, mode='same') / sum(win)
 
 # fig = plt.figure()
 # ax_original = fig.add_subplot(311)
@@ -127,6 +148,41 @@ win = signal.hann(50)
 # plt.show()
 
 
+# from scipy.fftpack import rfft, irfft, fftfreq
+
+# W = fftfreq(len(hor))
+# f_signal = rfft(hor)
+
+# plt.subplot(121)
+# plt.plot(len(sig),sig)
+# plt.subplot(122)
+# plt.plot(w, f_signal)
+# plt.show()
+
+# time   = np.linspace(0,10,2000)
+# signal = np.cos(5*np.pi*time) + np.cos(7*np.pi*time)
+
+# W = fftfreq(signal.size, d=time[1]-time[0])
+# f_signal = rfft(signal)
+
+# # If our original signal time was in seconds, this is now in Hz    
+# cut_f_signal = f_signal.copy()
+# cut_f_signal[(W<6)] = 0
+
+# cut_signal = irfft(cut_f_signal)
+
+# import pylab as plt
+# plt.subplot(221)
+# plt.plot(time,signal)
+# plt.subplot(222)
+# plt.plot(W,f_signal)
+# plt.xlim(0,10)
+# plt.subplot(223)
+# plt.plot(W,cut_f_signal)
+# plt.xlim(0,10)
+# plt.subplot(224)
+# plt.plot(time,cut_signal)
+# plt.show()
 
 
 
