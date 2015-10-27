@@ -41,19 +41,19 @@ for i in range(406,len(cnt)):
     ii=ii+1
 else:
  ##Convolve audio with cabrillo (maybe use wave.py)
-    sr, samples = io.wavfile.read("surfinusa.wav")
-    print sr
-    print samples
+#    sr, samples = io.wavfile.read("surfinusa.wav")
+#    print sr
+#    print samples
 
-    yf = fft(y)
-    plt.subplot(131)
-    plt.plot(x, y)
-    plt.subplot(132)
-    plt.plot(x,yf)
-    plt.subplot(133)
+#    yf = fft(y)
+#    plt.subplot(131)
+#    plt.plot(x, y)
+#    plt.subplot(132)
+#    plt.plot(x,yf)
+#    plt.subplot(133)
     # plt.plot(x,signal.convolve(y, samples.flatten(), mode='same'))
-    plt.plot(x,yf)
-    cv2.imshow('cabrillo.jpg',im)
-    plt.show()
-
+#    plt.plot(x,yf)
+#    cv2.imshow('cabrillo.jpg',im)
+#    plt.show()
+    print y
 
