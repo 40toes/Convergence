@@ -118,10 +118,28 @@ void setup() {
 
   mod = new Oscil(2, 0.4f, Waves.SINE);
   
+   // create the vocoder with a 1024 sample frame FFT and 3 overlapping windows
+  Vocoder vocode = new Vocoder( 1024, 8 );
+  
+  // patch the input into the vocoder modulator
+  // we want to modulate the synth sound with the mic input, to create that "robot" effect
+  audio.patch( vocode.modulator );
+  
+  // create a synth with two notes an octave apart
+  Oscil wave1 = new Oscil( 110, 0.8, Waves.SAW ); 
+  Oscil wave2 = new Oscil( 220, 0.4, Waves.SAW );
+  
+  Summer synth = new Summer();
+  wave1.patch( synth );
+  wave2.patch( synth );
+  
+  // patch it to the input on the vocoder and on to the output 
+  synth.patch( vocode ).patch( out );
+  
 //  mod.patch(audio);
   
 //  mod.patch(out);
-    audio.patch(mod).patch(out);
+//    audio.patch(mod).patch(out);
 //  in.patch(out);
 
 
@@ -192,7 +210,7 @@ void mouseMoved()
 //  float amp = map( mouseY, 0, height, 1, 0 );
 //  audio.setAmplitude( amp );
 //  
-  float freq = map( mouseX, 0, width, 0.1, 2 );
+  float freq = map( mouseX, 0, width, 0.1, 10000 );
   mod.setFrequency( freq );
 }
 
