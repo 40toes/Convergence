@@ -14,11 +14,22 @@ ArrayList<Float> finalPoints = new ArrayList<Float>();
 import ddf.minim.analysis.*;
 import ddf.minim.*;
 import ddf.minim.effects.*;
+import ddf.minim.spi.*; // for AudioRecordingStream
+import ddf.minim.ugens.*;
 
 Minim       minim;
-AudioPlayer audio;
+FilePlayer  audio;
+//AudioRecordingStream  audio;
+AudioOutput out;
+Oscil       mod;
 FFT         fft;
 Convolver   cliffs;
+MultiChannelBuffer buffer;
+LiveInput in;
+
+float [][] spectra;
+
+String fileName = "surfinusa.mp3";
 
 void setup() {
   src = loadImage("cabrillo.jpg"); 
@@ -64,18 +75,57 @@ void setup() {
 
   // Sound setup
   minim = new Minim(this);
+  int fftSize = 1024;
+  out = minim.getLineOut();
+  audio = new FilePlayer( minim.loadFileStream(fileName, fftSize, false) );
+//  audio = minim.loadFileStream(fileName, fftSize, false);
+//  LiveInput in;
+//  in = new LiveInput( audio );
 
-  audio = minim.loadFile("surfinusa.mp3", 1024);
-
+//  audio.loop(Minim.LOOP_CONTINUOUSLY);
   audio.loop();
 
-  fft = new FFT( audio.bufferSize(), audio.sampleRate() );
+//  fft = new FFT( fftSize, audio.getFormat().getSampleRate() );
+//  buffer = new MultiChannelBuffer(fftSize, audio.getFormat().getChannels());
+//  int totalSamples = int( (audio.getMillisecondLength() / 1000.0) * audio.getFormat().getSampleRate() );
+//   int totalChunks = (totalSamples / fftSize) + 1;
+//  println("Analyzing " + totalSamples + " samples for total of " + totalChunks + " chunks.");
+//  spectra = new float[totalChunks][fftSize/2];
+
+//  for(int chunkIdx = 0; chunkIdx < totalChunks; ++chunkIdx)
+//  {
+//    println("Chunk " + chunkIdx);
+//    println("  Reading...");
+//    audio.read( buffer );
+//    println("  Analyzing...");    
+//  
+//    // now analyze the left channel
+//    fft.forward( buffer.getChannel(0) );
+//    
+//    // and copy the resulting spectrum into our spectra array
+//    println("  Copying...");
+//    for(int i = 0; i < 512; ++i)
+//    {
+//      spectra[chunkIdx][i] = fft.getBand(i);
+//    }
+//  }
   
 //  float[] kernel = new float[] { 0, 0.005, 0.01, 0.018, 0.021, 0.03, 0.034, 0.037, 0.04, 0.042, 0.044, 0.046, 0.048, 0.049, 0.05, 0.049, 0.048, 0.046, 0.044, 0.042, 0.04, 0.037, 0.034, 0.03, 0.021, 0.018, 0.01, 0.005, 0 };
   float[] kernel = preKern;
                                    
-  cliffs = new Convolver(kernel, audio.bufferSize() );
-  audio.addEffect(cliffs);
+//  cliffs = new Convolver(kernel, audio.bufferSize() );
+//  audio.addEffect(cliffs);
+
+  mod = new Oscil(2, 0.4f, Waves.SINE);
+  
+//  mod.patch(audio);
+  
+//  mod.patch(out);
+    audio.patch(mod).patch(out);
+//  in.patch(out);
+
+
+
 }
 
 void draw() {
@@ -102,21 +152,23 @@ void draw() {
   // Draw Audio  
   scale(2.0);
   stroke(255);
+  
+//  audio.read( buffer );
+//  println(buffer.getSample(0,0));
+//  fft.forward( audio );
 
-  fft.forward( audio.mix );
+//  for (int i = 0; i < fft.specSize (); i++)
+//  {
+//    line( i, height, i, height - fft.getBand(i)*6 );
+//  }
 
-  for (int i = 0; i < fft.specSize (); i++)
-  {
-    line( i, height, i, height - fft.getBand(i)*6 );
-  }
-
-  for (int i = 0; i < audio.bufferSize () - 1; i++)
-  {
-    float x1 = map( i, 0, audio.bufferSize(), 0, width/2 );
-    float x2 = map( i+1, 0, audio.bufferSize(), 0, width/2 );
-    line( width/2 + x1, height - 200 + audio.left.get(i)*50, width/2 + x2, height - 200 + audio.left.get(i+1)*50 );
-    line( width/2 + x1, height - 100 + audio.right.get(i)*50, width/2 + x2, height - 100 + audio.right.get(i+1)*50 );
-  }
+//  for (int i = 0; i < audio.bufferSize () - 1; i++)
+//  {
+//    float x1 = map( i, 0, audio.bufferSize(), 0, width/2 );
+//    float x2 = map( i+1, 0, audio.bufferSize(), 0, width/2 );
+//    line( width/2 + x1, height - 200 + audio.left.get(i)*50, width/2 + x2, height - 200 + audio.left.get(i+1)*50 );
+//    line( width/2 + x1, height - 100 + audio.right.get(i)*50, width/2 + x2, height - 100 + audio.right.get(i+1)*50 );
+//  }
 
   noStroke();
   fill( 255, 128 );
@@ -124,8 +176,8 @@ void draw() {
   // the value returned by the level method is the RMS (root-mean-square) 
   // value of the current buffer of audio.
   // see: http://en.wikipedia.org/wiki/Root_mean_square
-  rect( width/2, height-62, audio.left.level()*width/2, 30 );
-  rect( width/2, height-30, audio.right.level()*width/2, 30 );
+//  rect( width/2, height-62, audio.left.level()*width/2, 30 );
+//  rect( width/2, height-30, audio.right.level()*width/2, 30 );
 }
 
 void mouseMoved()
@@ -140,8 +192,8 @@ void mouseMoved()
 //  float amp = map( mouseY, 0, height, 1, 0 );
 //  audio.setAmplitude( amp );
 //  
-//  float freq = map( mouseX, 0, width, 110, 880 );
-//  audio.setFrequency( freq );
+  float freq = map( mouseX, 0, width, 0.1, 2 );
+  mod.setFrequency( freq );
 }
 
 public class CompareToY implements Comparator<PVector>
