@@ -117,7 +117,7 @@ void setup() {
 //  audio.addEffect(cliffs);
 
   mod = new Oscil(2, 0.4f, Waves.SINE);
-  
+//  mod.offset.setLastValue( 200 );
    // create the vocoder with a 1024 sample frame FFT and 3 overlapping windows
   Vocoder vocode = new Vocoder( 1024, 8 );
   
@@ -134,7 +134,10 @@ void setup() {
   wave2.patch( synth );
   
   // patch it to the input on the vocoder and on to the output 
-  synth.patch( vocode ).patch( out );
+//  mod.patch( vocode ).patch( out );
+
+  audio.patch(mod);
+  mod.patch( out );
   
 //  mod.patch(audio);
   
@@ -210,8 +213,10 @@ void mouseMoved()
 //  float amp = map( mouseY, 0, height, 1, 0 );
 //  audio.setAmplitude( amp );
 //  
-  float freq = map( mouseX, 0, width, 0.1, 10000 );
+  float freq = map( mouseX, 0, width, 1, 2000 );
   mod.setFrequency( freq );
+  float amp = map( mouseY, 0, height, 0, 2000 );
+  mod.setAmplitude( amp );
 }
 
 public class CompareToY implements Comparator<PVector>
