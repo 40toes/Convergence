@@ -1,5 +1,17 @@
 # Convergence
 
+###Raspberry Pi Setup
+Start with the noobs guide for installing raspbian.
+
+- `sudo apt-get install python-dev build-essential`
+- `pip install cython` This one takes awhile
+- `sudo apt-get build-dep python-matplotlib`
+- `sudo apt-get install libopencv-dev python-opencv`
+- `sudo apt-get install -y python-numpy python-scipy python-matplotlib`
+- `git clone https://github.com/40toes/Convergence.git`
+- `cd Convergence`
+
+
 ###Mac OS X Install
 
 With Homebrew installed.
@@ -31,3 +43,9 @@ Debian PyAudio
 - sudo apt-get install python-pyaudio python3-pyaudio
 or if unavailable
 - pip install pyaudio
+
+
+sudo dpkg-reconfigure locales
+
+sudo apt-get install libportaudiocpp0
+sudo apt-get install portaudio19-dev
