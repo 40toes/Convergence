@@ -22,3 +22,12 @@ sudo apt-get install -y python-numpy python-scipy python-matplotlib
 - `cd ../scipy`
 - `python setup.py build`
 - `python setup.py install`
+
+Mac PyAudio
+- brew install portaudio
+- pip install pyaudio
+
+Debian PyAudio
+- sudo apt-get install python-pyaudio python3-pyaudio
+or if unavailable
+- pip install pyaudio
