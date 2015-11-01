@@ -11,7 +11,11 @@ Vagrant.configure(2) do |config|
   # https://docs.vagrantup.com.
 
   config.vm.provider "virtualbox" do |v|
-    v.gui = true
+    v.gui = false
+    v.name = "Debian 32-bit Box"
+    v.memory = 2048
+    v.cpus = 1
+    v.customize ["modifyvm", :id, '--audio', 'coreaudio', '--audiocontroller', 'ac97'] # choices: hda sb16 ac97
   end
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
@@ -31,5 +35,5 @@ Vagrant.configure(2) do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "../", "/vagrant_data"
+  config.vm.synced_folder "../", "/home/vagrant/Convergence"
 end
