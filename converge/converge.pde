@@ -72,12 +72,17 @@ void setup() {
 
 //  println(finalPoints);
 //  println(preKern);
-
-  // Sound setup
+  
+  ///-------------
+  /// Sound setup
+  ///-------------
+  
   minim = new Minim(this);
   int fftSize = 1024;
   out = minim.getLineOut();
   audio = new FilePlayer( minim.loadFileStream(fileName, fftSize, false) );
+  audio.setSampleRate( 44100 );
+  println(audio.sampleRate() );
 //  audio = minim.loadFileStream(fileName, fftSize, false);
 //  LiveInput in;
 //  in = new LiveInput( audio );
@@ -116,7 +121,7 @@ void setup() {
 //  cliffs = new Convolver(kernel, audio.bufferSize() );
 //  audio.addEffect(cliffs);
 
-  mod = new Oscil(2, 0.4f, Waves.SINE);
+  mod = new Oscil(2, 1.0f, Waves.SINE);
 //  mod.offset.setLastValue( 200 );
    // create the vocoder with a 1024 sample frame FFT and 3 overlapping windows
   Vocoder vocode = new Vocoder( 1024, 8 );
@@ -136,8 +141,13 @@ void setup() {
   // patch it to the input on the vocoder and on to the output 
 //  mod.patch( vocode ).patch( out );
 
-  audio.patch(mod);
-  mod.patch( out );
+  synth.patch(vocode).patch(out);
+
+//  audio.patch(mod);
+//  mod.patch( out );
+
+
+//audio.patch(out);
   
 //  mod.patch(audio);
   
@@ -213,10 +223,11 @@ void mouseMoved()
 //  float amp = map( mouseY, 0, height, 1, 0 );
 //  audio.setAmplitude( amp );
 //  
-  float freq = map( mouseX, 0, width, 1, 2000 );
-  mod.setFrequency( freq );
-  float amp = map( mouseY, 0, height, 0, 2000 );
-  mod.setAmplitude( amp );
+//  float freq = map( mouseX, 0, width, 0, 10 );
+//  mod.setFrequency( freq );
+//  float amp = map( mouseY, 0, height, 0, 10 );
+//  mod.setAmplitude( amp );
+  
 }
 
 public class CompareToY implements Comparator<PVector>
