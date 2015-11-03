@@ -11,23 +11,41 @@ import audioop
 from pylab import *
 import pyaudio
 
-# Returns rate and data(numpy array)
-sampFreq, send = wavfile.read('440_sine.wav')
+# Make a dummy signal
+xs=np.arange(1,1042,.01) #generate Xs (0.00,0.01,0.02,0.03,...,100.0)
+signal = np.sin(xs*.3)/300
 
-print 'send data type', send.dtype
+# Returns rate and data(numpy array)
+sampFreq, send0 = wavfile.read('surfinusa.wav')
 
 # Normalize to -1 to 1 (for int16)
-send = send / (2.**15);
+send = send0 / (2.**15);
 
-print 'size and shape of send data', send.shape
-print 'length in seconds', send.shape[0]*1.0 / sampFreq
-
-# Grab one of the audio channels
+# # Grab one of the audio channels
 ch1 = send[:,0]
+ch1_fft = fft(ch1)
+
+mod_ch1 = ch1[1023:10230]*signal[1023:10230]
+
+# # Plot
+h,w=2,2
+figure(figsize=(12,9))
+subplots_adjust(hspace=.7)
+
+subplot(h,w,1);title("Just a sine wave")
+plot(xs,signal)
+subplot(h,w,2);title("One channel of surfinusa")
+plot(ch1)
+subplot(h,w,3);title("Sine wave * channel")
+plot(mod_ch1)
+subplot(h,w,4);title("IFFT modulated")
+plot(ifft(mod_ch1))
+show()
+
 
 
 # Play back audio
-CHUNK = 1024 # can also be read as sample size
+CHUNK = 1042 # can also be read as sample size
 
 # wav file
 wf = wave.open('surfinusa.wav', 'rb')
@@ -41,8 +59,12 @@ stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
 
 data = wf.readframes(CHUNK)
 
+send0_fft = fft(send0)
+toplay = ifft(send0_fft)
+
 while data != '':
-  stream.write(data)
+  stream.write(toplay) # THis is the chunk we need to get working. Pipeline of fft to ifft w/out modulating in between
+  # stream.write(send0) # this works
   data = wf.readframes(CHUNK)
 
 stream.stop_stream()
@@ -52,7 +74,7 @@ p.terminate()
 
 
 
-
+##NOTE HAVE TO RENORMALIZE BEFORE PLAYING MODDED AUDIO
 
 
 
