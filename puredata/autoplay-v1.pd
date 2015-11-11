@@ -1,0 +1,14 @@
+#N canvas 1364 460 768 774 10;
+#X obj 52 50 loadbang;
+#X obj 52 74 delay 8000;
+#X obj 52 97 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X obj 52 118 dsp;
+#X floatatom 52 141 5 0 0 0 - - -;
+#X text 115 49 Automatically turn on audio 8 seconds after patch opens.
+;
+#X text 91 141 % cpu;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
