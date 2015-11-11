@@ -1,51 +1,17 @@
 # Convergence
 
-###Raspberry Pi Setup
-Start with the noobs guide for installing raspbian.
+## Raspberry Pi Setup
 
-- `sudo apt-get install python-dev build-essential`
-- `pip install cython` This one takes awhile
-- `sudo apt-get build-dep python-matplotlib`
-- `sudo apt-get install libopencv-dev python-opencv`
-- `sudo apt-get install -y python-numpy python-scipy python-matplotlib`
-- `git clone https://github.com/40toes/Convergence.git`
-- `cd Convergence`
+- SD card boot image: https://ccrma.stanford.edu/~eberdahl/Satellite/
+- Sonar sensor setup: http://www.maxbotix.com/articles/074.htm
 
+## Working on Mac OSX
 
-###Mac OS X Install
+- You can work on Pure Data on a Mac and then uploading the patch files to the Pi after.
+	- https://puredata.info/downloads/pd-extended
+	- use `scp` to copy files to and from your Pi ([link](https://ccrma.stanford.edu/wiki/Satellite_CCRMA_First_Steps))
 
-With Homebrew installed.
-- `brew install python`
-- `brew install gcc`
-sudo apt-get install python-dev build-essential
-- `pip install cython`
-sudo apt-get build-dep python-matplotlib
-- `pip install matplotlib`
-sudo apt-get install libopencv-dev python-opencv
-sudo apt-get install -y python-numpy python-scipy python-matplotlib
-- `brew install homebrew/science/opencv`
-- `git clone https://github.com/40toes/Convergence.git`
-- `cd Convergence`
-- `git clone git://github.com/numpy/numpy.git numpy`
-- `git clone git://github.com/scipy/scipy.git scipy`
-- `cd numpy`
-- `python setup.py build`
-- `python setup.py install`
-- `cd ../scipy`
-- `python setup.py build`
-- `python setup.py install`
+## Pure Data references
 
-Mac PyAudio
-- brew install portaudio
-- pip install pyaudio
-
-Debian PyAudio
-- sudo apt-get install python-pyaudio python3-pyaudio
-or if unavailable
-- pip install pyaudio
-
-
-sudo dpkg-reconfigure locales
-
-sudo apt-get install libportaudiocpp0
-sudo apt-get install portaudio19-dev
+- https://www.youtube.com/playlist?list=PL12DC9A161D8DC5DC
+- http://en.flossmanuals.net/pure-data/dataflow-tutorials/arrays-graphs-tables/
