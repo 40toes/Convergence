@@ -2,7 +2,6 @@
 #X obj 13 11 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
 ;
 #X msg 13 33 \; pd dsp \$1;
-#X msg 109 154 open surfinusa.wav;
 #X msg 47 176 start;
 #X msg 47 196 stop;
 #X obj 107 505 dac~ 1 2;
@@ -32,35 +31,36 @@
 #X obj 160 258 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 240 393 hsl 20 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 1300 1;
+-1 -1 1100 1;
 #X obj 200 422 *~;
 #X obj 201 393 osc~;
 #X obj 201 343 knob 32 32 0 10 0 0 empty empty empty 0 -8 0 8 -262144
--1 -1 1100 1;
+-1 -1 0 1;
 #X obj 120 396 hsl 20 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 1100 1;
+-1 -1 800 1;
 #X obj 80 425 *~;
 #X obj 81 396 osc~;
 #X obj 81 346 knob 32 32 0 10 0 0 empty empty empty 0 -8 0 8 -262144
--1 -1 1000 1;
+-1 -1 0 1;
 #X obj 175 449 *~;
 #X obj 53 451 *~;
+#X msg 109 154 open assets/surfinusa.wav;
 #X connect 0 0 1 0;
-#X connect 2 0 6 0;
-#X connect 3 0 6 0;
-#X connect 4 0 6 0;
-#X connect 6 0 21 0;
-#X connect 6 1 20 0;
-#X connect 6 2 11 0;
-#X connect 9 0 8 1;
-#X connect 10 0 8 0;
-#X connect 12 0 13 1;
-#X connect 13 0 20 1;
+#X connect 2 0 5 0;
+#X connect 3 0 5 0;
+#X connect 5 0 20 0;
+#X connect 5 1 19 0;
+#X connect 5 2 10 0;
+#X connect 8 0 7 1;
+#X connect 9 0 7 0;
+#X connect 11 0 12 1;
+#X connect 12 0 19 1;
+#X connect 13 0 12 0;
 #X connect 14 0 13 0;
-#X connect 15 0 14 0;
-#X connect 16 0 17 1;
-#X connect 17 0 21 1;
+#X connect 15 0 16 1;
+#X connect 16 0 20 1;
+#X connect 17 0 16 0;
 #X connect 18 0 17 0;
-#X connect 19 0 18 0;
-#X connect 20 0 5 1;
+#X connect 19 0 4 1;
+#X connect 20 0 4 0;
 #X connect 21 0 5 0;
