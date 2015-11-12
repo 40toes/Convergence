@@ -1,5 +1,5 @@
-#N canvas 1834 140 621 645 10;
-#X obj 13 11 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
+#N canvas 1394 539 1124 932 10;
+#X obj 14 11 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
 #X msg 13 33 \; pd dsp \$1;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -20,14 +20,14 @@
 #X obj 135 209 phasor~;
 #X obj 135 270 *~;
 #X obj 150 247 r sampleSize;
-#X obj 137 457 tabread4~ channelL;
-#X obj 150 482 tabread4~ channelR;
-#X obj 134 552 *~;
-#X obj 179 552 *~;
-#X obj 134 578 dac~ 1 2;
-#X obj 225 510 vsl 30 40 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 178 291 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 26 440 tabread4~ channelL;
+#X obj 205 492 tabread4~ channelR;
+#X obj 127 710 *~;
+#X obj 182 711 *~;
+#X obj 134 745 dac~ 1 2;
+#X obj 288 644 vsl 30 40 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 1400 1;
+#X obj 178 291 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 179 312 metro 50;
 #X obj 179 335 snapshot~;
@@ -35,9 +35,16 @@
 #X obj 178 402 /;
 #X obj 203 380 r sampleSize;
 #X floatatom 178 427 5 0 1 0 - - -;
-#X obj 387 475 hsl 195 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 1596 1;
+#X obj 388 473 hsl 195 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 2 1;
 #X msg 135 60 read -resize assets/surfinusa.wav channelL channelR;
+#X obj 233 554 clip~ -5e+12 5e+12;
+#X obj 44 519 clip~ -0.5 0.5;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array \$0-array 100 float 0;
+#X coords 0 1 100 -1 200 100 1 0 0;
+#X restore 406 547 graph;
+#X obj 107 595 tabwrite~ \$0-array;
 #X connect 0 0 1 0;
 #X connect 3 0 27 0;
 #X connect 5 0 6 0;
@@ -46,11 +53,11 @@
 #X connect 7 0 9 0;
 #X connect 7 0 10 0;
 #X connect 10 0 11 0;
-#X connect 11 0 13 0;
 #X connect 11 0 14 0;
 #X connect 11 0 21 0;
+#X connect 11 0 13 0;
 #X connect 12 0 11 1;
-#X connect 13 0 15 0;
+#X connect 13 0 29 0;
 #X connect 14 0 16 0;
 #X connect 15 0 17 0;
 #X connect 16 0 17 1;
@@ -64,3 +71,5 @@
 #X connect 24 0 23 1;
 #X connect 25 0 26 0;
 #X connect 27 0 5 0;
+#X connect 29 0 15 0;
+#X connect 29 0 31 0;
