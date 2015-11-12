@@ -5,7 +5,7 @@
 - A PD file runs on startup of the Pi.
 	- login into the Pi by using the network connection settings [here](https://ccrma.stanford.edu/wiki/CCRMA_Satellite_How_To_Connect_RevC)
 	- the default PD file to start is set in the following file: /home/ccrma/on-startup/load_default_patch
-		- type `cat load_default_patch` to read the contents of the file
+		- do `cd on-startup/` and type `cat load_default_patch` to read the contents of the file, at the bottom is the line which starts the default PD file.
 	- on startup of the Pi, the file will play automatically. To stop it, ssh into the pi and type `./bin/stop_default`
 
 ## Raspberry Pi Setup
