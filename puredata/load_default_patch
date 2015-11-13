@@ -36,6 +36,4 @@
 
 # It is necessary to specify the complete path of the pd patch:
 #pd -nogui /home/ccrma/on-startup/default-patch.pd
-#pd -nogui /home/ccrma/on-startup/electroacoustic-shuffle.pd
-#pd -nogui /home/ccrma/on-startup/electroacoustic-shuffle-simple.pd
-pd -nogui /home/ccrma/on-startup/autoplay-v1.pd
+pd -nogui /home/ccrma/on-startup/convergence-patch.pd
