@@ -1,0 +1,69 @@
+#N canvas 1364 460 608 838 10;
+#X obj 52 50 loadbang;
+#X obj 52 74 delay 8000;
+#X obj 52 97 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X obj 52 118 dsp;
+#X floatatom 52 141 5 0 0 0 - - -;
+#X text 115 49 Automatically turn on audio 8 seconds after patch opens.
+;
+#X text 91 141 % cpu;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array channelL 9.72698e+06 float 0;
+#X coords 0 1 9.72698e+06 -1 200 140 1;
+#X restore 357 332 graph;
+#X obj 108 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array channelR 9.72698e+06 float 0;
+#X coords 0 1 9.72698e+06 -1 200 140 1;
+#X restore 357 490 graph;
+#X obj 108 247 soundfiler;
+#X floatatom 117 271 12 0 0 0 - - -;
+#X obj 108 324 expr 44100 / $f1;
+#X obj 117 295 s sampleSize;
+#X floatatom 118 348 12 0 0 0 - - -;
+#X obj 108 373 phasor~;
+#X obj 108 434 *~;
+#X obj 123 411 r sampleSize;
+#X obj 110 621 tabread4~ channelL;
+#X obj 123 646 tabread4~ channelR;
+#X obj 107 742 dac~ 1 2;
+#X obj 151 455 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 152 476 metro 50;
+#X obj 152 499 snapshot~;
+#X floatatom 152 523 12 0 0 0 - - -;
+#X obj 151 566 /;
+#X obj 176 544 r sampleSize;
+#X floatatom 151 591 5 0 1 0 - - -;
+#X obj 360 639 hsl 195 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 7689 1;
+#X msg 108 224 read -resize assets/surfinusa.wav channelL channelR
+;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 2 0 8 0;
+#X connect 3 0 4 0;
+#X connect 8 0 29 0;
+#X connect 10 0 11 0;
+#X connect 10 0 12 0;
+#X connect 11 0 13 0;
+#X connect 12 0 14 0;
+#X connect 12 0 15 0;
+#X connect 15 0 16 0;
+#X connect 16 0 18 0;
+#X connect 16 0 19 0;
+#X connect 16 0 23 0;
+#X connect 17 0 16 1;
+#X connect 18 0 20 0;
+#X connect 19 0 20 1;
+#X connect 21 0 22 0;
+#X connect 22 0 23 0;
+#X connect 23 0 24 0;
+#X connect 24 0 25 0;
+#X connect 25 0 27 0;
+#X connect 26 0 25 1;
+#X connect 27 0 28 0;
+#X connect 29 0 10 0;
